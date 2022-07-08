@@ -1,0 +1,19 @@
+<!-- <div class="demo-full-width margin-top" [formGroup]="group">
+    <label class="radio-label-padding">{{field.label}}:</label>
+    <mat-radio-group [formControlName]="field.name" (change)="radioChange($event,field.name)">
+    <mat-radio-button style = 'padding-left: 20px;' *ngFor="let item of field.options" [value]="item">{{item}}</mat-radio-button>
+    </mat-radio-group>
+</div> -->
+
+<div class="demo-full-width margin-top" [formGroup]="group">
+    <div fxLayout = "column">
+        <div>
+            <label class="radio-label-padding">{{field.label}}:</label>
+        </div>
+        <div style = "padding-top: 10px;">
+            <mat-radio-group class="example-radio-group" [formControlName]="field.name" (change)="radioChange($event,field.name)">
+            <mat-radio-button style = 'padding-left: 20px;' *ngFor="let item of field.options" [value]="item">{{item}}</mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+</div>

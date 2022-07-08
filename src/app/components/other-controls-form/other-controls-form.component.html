@@ -1,0 +1,11 @@
+<div fxLayout="column" fxLayoutAlign="center stretch">
+    <mat-card>
+        <div *ngFor="let arrGroup of group.get(field.name)['controls'];let i = index;">
+            <div *ngFor="let x of field.formArrays[i];let idx=index;">
+                <!-- {{idx}} -->
+                <div *ngIf = "i === 0" dynamicField [field]="x" [group]="arrGroup"></div>
+                <div *ngIf = "idx >= 0 && i!=0 && checkRadioButtonStatus(group,field.name)" dynamicField [field]="x" [group]="arrGroup"></div>
+            </div>
+        </div>
+    </mat-card>
+</div>

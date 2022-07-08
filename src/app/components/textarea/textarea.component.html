@@ -1,0 +1,24 @@
+<div [formGroup]="group" fxFlex="100">
+    <p style="width: 90%; font-weight: 300;">{{field.label}}</p>
+    <mat-form-field> 
+    <div>     
+    <textarea [formControlName]="field.name" appearance = 'fill' [type]="field.inputType" rows = "4" columns = 8 style = "width: 300px;" matInput #textArea></textarea>
+    <button [disabled] = "displayErrorMessage" class = "circle" (click)="onClickExpSaveComment(field,textArea.value)">
+        <div class="initials">
+          <mat-icon>Done</mat-icon>
+        </div>
+    </button>
+    </div>
+    <!-- <p *ngIf = "displayErrorMessage">{{errorMessage}}</p> -->
+    <!-- <div *ngIf = "saveClicked">
+    <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
+        <mat-error #message *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message}}</mat-error>
+    </ng-container>
+    </div>     -->
+</mat-form-field>
+<div *ngIf = "saveClicked">
+    <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
+        <mat-error #message *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message}}</mat-error>
+    </ng-container>
+    </div>
+</div>
