@@ -10,7 +10,7 @@ export class DsService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getJson() {
+  getJson():any {
    return this.httpClient.get('http://localhost:1337/api/ref-data/sic')
  }
 }

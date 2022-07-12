@@ -1111,6 +1111,7 @@ export class AppComponent {
     },
   ]
   qData : any;
+  expression : boolean = false;
   submit(value: any) {}
 constructor(private dsService : DsService){
 
@@ -1118,14 +1119,16 @@ constructor(private dsService : DsService){
 
 getJson(){
   this.dsService.getJson().subscribe(data=>{
-    console.log(data);
-    this.qData = data;
+    this.qData = data.data;
+    console.log("qdaaaaaaaaaa",this.qData)
+    console.log("regConfigCRF",this.regConfigCRF)
+    this.expression = true;
    });
 }
 
 ngOnInit() {
 
-
+this.getJson();
   
 }
 
