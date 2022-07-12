@@ -3,12 +3,14 @@ import { Validators } from '@angular/forms';
 import { FieldConfig } from './field.interface';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 import {CriticalRiskFactorsConfig} from './crf-fields.interface'
+import {DsService} from '../ds.service'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
+
 export class AppComponent {
   @ViewChild(DynamicFormComponent) form: DynamicFormComponent;
   regConfig: FieldConfig[] = [
@@ -1108,6 +1110,24 @@ export class AppComponent {
       label: 'Save',
     },
   ]
-
+  qData : any;
   submit(value: any) {}
+constructor(private dsService : DsService){
+
+}
+
+getJson(){
+  this.dsService.getJson().subscribe(data=>{
+    console.log(data);
+    this.qData = data;
+   });
+}
+
+ngOnInit() {
+
+
+  
+}
+
+
 }

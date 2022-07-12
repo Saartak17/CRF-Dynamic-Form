@@ -17,6 +17,7 @@ import { ChildFormComponent } from "./components/child-form/child-form.component
 import {CommentboxComponent} from "./components/comment-box/comment-box.component";
 import {TextareaComponent} from './components/textarea/textarea.component';
 import {OtherControlsFormComponent} from './components/other-controls-form/other-controls-form.component'
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import {OtherControlsFormComponent} from './components/other-controls-form/other
     BrowserAnimationsModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],
