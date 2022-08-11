@@ -1,6 +1,8 @@
 import {Component,EventEmitter,Input,OnChanges,OnInit,Output} from "@angular/core";
 import {FormGroup,FormBuilder,Validators,FormControl} from "@angular/forms";
 import { FieldConfig, Validator } from "../../field.interface";
+import {sicConfig} from '../../sic-mock';
+import {CriticalRiskFactorsConfig} from '../../crf-fields.interface'
 
 @Component({
   exportAs: "dynamicForm",
@@ -10,10 +12,16 @@ import { FieldConfig, Validator } from "../../field.interface";
 })
 
 export class DynamicFormComponent implements OnInit {
-  @Input() fields: FieldConfig[] = [];
+  @Input() fields:CriticalRiskFactorsConfig[] = [];
+  @Input() sicData;
   form: FormGroup;
   @Output() submit: EventEmitter<any> = new EventEmitter<any>();
   @Output() childFG: EventEmitter<any> = new EventEmitter<any>();
+
+  // sicData = sicConfig;
+  enteredSIC: string = '6513';
+  finalFields = [];
+  // filteredSICData = [];
 
   get value() {
     return this.form.value;
@@ -21,14 +29,33 @@ export class DynamicFormComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
+    // console.log(this.sicData);
+    // const filteredSic = this.sicData.filter(element => {
+    //   return element.sicCode === this.enteredSIC;
+    // })
+    // console.log(filteredSic);
+
+    // this.fields.forEach(element => {
+    //   filteredSic.forEach(data => {
+    //     if(data.questionID === element.questionID){
+    //       this.finalFields.push(element); 
+    //     }
+    //   })
+
+    //   if(!element.questionID){
+    //     this.finalFields.push(element);
+    //   }
+    // })
+    // console.log(this.finalFields);
+
+    // this.form = this.createControl(this.fields);
+    // this.form = this.createControl(this.finalFields);
     this.form = this.createControl(this.fields);
+    console.log(this.form);
     this.form.valueChanges.subscribe(x => {
       
       this.submit.emit(x);
       //this.childFG.emit(this.form);
-    });
-    this.form.get('anyOtherUniqueExposures').valueChanges.subscribe(value => {
-      console.log(value);
     });
   }
 
@@ -49,8 +76,6 @@ export class DynamicFormComponent implements OnInit {
     const group = this.fb.group({});
     fields.forEach(field => {
       if (field.type === "button") return;
-      // console.log(field);
-      // console.log(field.formArrays)
       if(field.formArrays != undefined && field.formArrays.length >0){
         let items = [];
         field.formArrays.forEach(fields => {
@@ -64,6 +89,7 @@ export class DynamicFormComponent implements OnInit {
         this.bindValidations(field.validations || [])
         );
         group.addControl(field.name, control);
+        console.log(field.name);  
       }
     });
     console.log(group);

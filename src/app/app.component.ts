@@ -4,6 +4,8 @@ import { FieldConfig } from './field.interface';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 import {CriticalRiskFactorsConfig} from './crf-fields.interface'
 import {DsService} from '../ds.service'
+import {regConfigCRF} from './crf-ques-mock';
+import {sicConfig} from './sic-mock';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +15,11 @@ import {DsService} from '../ds.service'
 
 export class AppComponent {
   @ViewChild(DynamicFormComponent) form: DynamicFormComponent;
+  crfQuesData = regConfigCRF;
+  sicData = sicConfig;
+  enteredSIC: string = '6512';
+  filteredSICData = [];
+  finalForm = [];
   regConfig: FieldConfig[] = [
     {
       type: 'childform',
@@ -858,258 +865,259 @@ export class AppComponent {
 
   ]
 
-  regConfigCRF: CriticalRiskFactorsConfig[] = [
-    {
-      type: 'radiobutton',
-      label: 'Determine the Total Insured Value (TIV) for Construction',
-      name: 'Determine the Total Insured Value (TIV) for Construction',
-      options: ['Noncombustible or Better > = 90% of TIV', 'Noncombustible or Better, including Tilt Up between 80% and 90% of TIV?', 'All Other'],
-      value: '',
-      lob: 'Property, Package',
-      crfQuestion: 'Construction',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  // regConfigCRF: CriticalRiskFactorsConfig[] = [
+  //   {
+  //     type: 'radiobutton',
+  //     label: 'Determine the Total Insured Value (TIV) for Construction',
+  //     name: 'Determine the Total Insured Value (TIV) for Construction',
+  //     options: ['Noncombustible or Better > = 90% of TIV', 'Noncombustible or Better, including Tilt Up between 80% and 90% of TIV?', 'All Other'],
+  //     value: '',
+  //     lob: 'Property, Package',
+  //     crfQuestion: 'Construction',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: 'Determine the Total Insured Value (TIV) for Occupancy',
-      name: 'Determine the Total Insured Value (TIV) for Occupancy',
-      options: ['Office > = 90% of TIV', 'Office between 80% and 90% of TIV?', 'Habitational >20% of TIV or All Other'],
-      value: '',
-      lob: 'Property, Package',
-      crfQuestion: 'Occupancy',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: 'Determine the Total Insured Value (TIV) for Occupancy',
+  //     name: 'Determine the Total Insured Value (TIV) for Occupancy',
+  //     options: ['Office > = 90% of TIV', 'Office between 80% and 90% of TIV?', 'Habitational >20% of TIV or All Other'],
+  //     value: '',
+  //     lob: 'Property, Package',
+  //     crfQuestion: 'Occupancy',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: 'Determine the Total Insured Value (TIV) for Private Protection',
-      name: 'Determine the Total Insured Value (TIV) for Private Protection',
-      options: ['> = 90% of TIV sprinklered with Central Station or Proprietary alarms', 'Between 75% and 90% of TIV sprinklered with Central Station or Proprietary alarms', 'All Other'],
-      value: '',
-      lob: 'Property, Package',
-      crfQuestion: 'Private Protection',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: 'Determine the Total Insured Value (TIV) for Private Protection',
+  //     name: 'Determine the Total Insured Value (TIV) for Private Protection',
+  //     options: ['> = 90% of TIV sprinklered with Central Station or Proprietary alarms', 'Between 75% and 90% of TIV sprinklered with Central Station or Proprietary alarms', 'All Other'],
+  //     value: '',
+  //     lob: 'Property, Package',
+  //     crfQuestion: 'Private Protection',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: 'Determine the Total Insured Value (TIV) per Jurisdictional Consideration',
-      name: 'Determine the Total Insured Value (TIV) per Jurisdictional Consideration',
-      options: ['50% or more of TIV in: CA, CT, DC, DE, ME, NH, NV, OR, UT, VA', 'All Other', '50% or more of TIV in:  AL, AR, CO, FL, IA, IN, KS, LA, MA, MI, MN, MO, MS, NE, NM, OH, OK, SD, TX'],
-      value: '',
-      lob: 'Property, Package',
-      crfQuestion: 'Jurisdictional Consideration',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: 'Determine the Total Insured Value (TIV) per Jurisdictional Consideration',
+  //     name: 'Determine the Total Insured Value (TIV) per Jurisdictional Consideration',
+  //     options: ['50% or more of TIV in: CA, CT, DC, DE, ME, NH, NV, OR, UT, VA', 'All Other', '50% or more of TIV in:  AL, AR, CO, FL, IA, IN, KS, LA, MA, MI, MN, MO, MS, NE, NM, OH, OK, SD, TX'],
+  //     value: '',
+  //     lob: 'Property, Package',
+  //     crfQuestion: 'Jurisdictional Consideration',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: 'Determine the Total Insured Value (TIV) for locations in U.S. Wind Control Zone',
-      name: 'Determine the Total Insured Value (TIV) for locations in U.S. Wind Control Zone',
-      options: ['< = 10% of TIV', 'TIV is between 10% and 20%', 'TIV >= 20%'],
-      value: '',
-      lob: 'Property, Package',
-      crfQuestion: 'U.S. Wind Control Zone ',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: 'Determine the Total Insured Value (TIV) for locations in U.S. Wind Control Zone',
+  //     name: 'Determine the Total Insured Value (TIV) for locations in U.S. Wind Control Zone',
+  //     options: ['< = 10% of TIV', 'TIV is between 10% and 20%', 'TIV >= 20%'],
+  //     value: '',
+  //     lob: 'Property, Package',
+  //     crfQuestion: 'U.S. Wind Control Zone ',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: 'Determine the Total Insured Value (TIV) for Vacancy (based on Total Sq. Footage)',
-      name: 'Determine the Total Insured Value (TIV) for Vacancy (based on Total Sq. Footage)',
-      options: ['Occupancy Rate  > 90%', 'Occupancy Rate between 80% and 90%', 'Occupancy Rate < 80%'],
-      value: '',
-      lob: 'Property, Package',
-      crfQuestion: 'Vacancy Rate (based on Total Sq. Footage)',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: 'Determine the Total Insured Value (TIV) for Vacancy (based on Total Sq. Footage)',
+  //     name: 'Determine the Total Insured Value (TIV) for Vacancy (based on Total Sq. Footage)',
+  //     options: ['Occupancy Rate  > 90%', 'Occupancy Rate between 80% and 90%', 'Occupancy Rate < 80%'],
+  //     value: '',
+  //     lob: 'Property, Package',
+  //     crfQuestion: 'Vacancy Rate (based on Total Sq. Footage)',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: 'Determine buidling Valuation with respect to M&S',
-      name: 'Determine buidling Valuation with respect to M&S',
-      options: ['Valuation > 100% M&S', '90% M&S < Valuation < 100% M&S', 'Valuation < 90% M&S'],
-      value: '',
-      lob: 'Property, Package',
-      crfQuestion: 'Valuation',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: 'Determine buidling Valuation with respect to M&S',
+  //     name: 'Determine buidling Valuation with respect to M&S',
+  //     options: ['Valuation > 100% M&S', '90% M&S < Valuation < 100% M&S', 'Valuation < 90% M&S'],
+  //     value: '',
+  //     lob: 'Property, Package',
+  //     crfQuestion: 'Valuation',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: "Determine the business's Financial Stress Score",
-      name: "Determine the business's Financial Stress Score",
-      options: ['70%  <= x < 100%', '30% <= x < 70% or Unknown', 'x < 30%'],
-      value: '',
-      lob: 'Property, Package',
-      crfQuestion: 'Financial Stress Score',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: "Determine the business's Financial Stress Score",
+  //     name: "Determine the business's Financial Stress Score",
+  //     options: ['70%  <= x < 100%', '30% <= x < 70% or Unknown', 'x < 30%'],
+  //     value: '',
+  //     lob: 'Property, Package',
+  //     crfQuestion: 'Financial Stress Score',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: "Determine the Crime Index for each risk location",
-      name: "Determine the Crime Index for each risk location",
-      options: ['x < 40', '40 <= x < 300 or Unknown', 'x >= 300'],
-      value: '',
-      lob: 'Property, Package',
-      crfQuestion: 'Crime Index',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: "Determine the Crime Index for each risk location",
+  //     name: "Determine the Crime Index for each risk location",
+  //     options: ['x < 40', '40 <= x < 300 or Unknown', 'x >= 300'],
+  //     value: '',
+  //     lob: 'Property, Package',
+  //     crfQuestion: 'Crime Index',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: "Determine the Fiver Year Loss History",
-      name: "Determine the Fiver Year Loss History",
-      options: ['Five Year Property Keypunch LR < 25%', 'Five Year Property Keypunch LR is 25% to 40%', 'Five Year Property Keypunch LR > 40%'],
-      value: '',
-      lob: 'Property, Package',
-      crfQuestion: 'Loss History',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: "Determine the Fiver Year Loss History",
+  //     name: "Determine the Fiver Year Loss History",
+  //     options: ['Five Year Property Keypunch LR < 25%', 'Five Year Property Keypunch LR is 25% to 40%', 'Five Year Property Keypunch LR > 40%'],
+  //     value: '',
+  //     lob: 'Property, Package',
+  //     crfQuestion: 'Loss History',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: "Determine the Total Insured Value (TIV) for Occupancy",
-      name: "Determine the Total Insured Value (TIV) for Occupancy",
-      options: ['Office > 90% of Sq. Footage with < 10% medical office', 'Office and/or Light Industrial/Warehouse > 90% of Sq. Footage with < 10% medical office, retail, habitational', 'Office and/or Light Industrial/Warehouse > 80% of Sq. Footage with < 20% medical office, retail, habitational no more than 10%', 'All Other with no more than 15% habitational', '15% of Sq. Footage habitational'],
-      value: '',
-      lob: 'Liability, Package',
-      crfQuestion: 'Occupancy',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: "Determine the Total Insured Value (TIV) for Occupancy",
+  //     name: "Determine the Total Insured Value (TIV) for Occupancy",
+  //     options: ['Office > 90% of Sq. Footage with < 10% medical office', 'Office and/or Light Industrial/Warehouse > 90% of Sq. Footage with < 10% medical office, retail, habitational', 'Office and/or Light Industrial/Warehouse > 80% of Sq. Footage with < 20% medical office, retail, habitational no more than 10%', 'All Other with no more than 15% habitational', '15% of Sq. Footage habitational'],
+  //     value: '',
+  //     lob: 'Liability, Package',
+  //     crfQuestion: 'Occupancy',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: "Determine the Total Insured Value (TIV) per Jurisdictional Consideration",
-      name: "Determine the Total Insured Value (TIV) per Jurisdictional Consideration",
-      options: ['100% of exposure in AZ, CA, DC, MI, NC, OH, OR, VA, WA ', 
-                '50% or more of exposure in AZ, CA, DC, MI, NC, OH, OR, VA, WA and less than 20% in CO, FL, IL, LA, NJ, NV and 0%', 
-                'Exposure in all other states with less than 20% in CO, FL, IL, LA, NJ, NV and 0% NY',
-                'Exposure in all other states with less than 20% in CO, FL, IL, LA, NJ, NV and no more than 10% NY',
-                '20% or more exposure in CO, FL, IL, LA, NJ, NV, and / or > 10% NY'],
-      value: '',
-      lob: 'Liability, Package',
-      crfQuestion: 'Jurisdictional Consideration',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: "Determine the Total Insured Value (TIV) per Jurisdictional Consideration",
+  //     name: "Determine the Total Insured Value (TIV) per Jurisdictional Consideration",
+  //     options: ['100% of exposure in AZ, CA, DC, MI, NC, OH, OR, VA, WA ', 
+  //               '50% or more of exposure in AZ, CA, DC, MI, NC, OH, OR, VA, WA and less than 20% in CO, FL, IL, LA, NJ, NV and 0%', 
+  //               'Exposure in all other states with less than 20% in CO, FL, IL, LA, NJ, NV and 0% NY',
+  //               'Exposure in all other states with less than 20% in CO, FL, IL, LA, NJ, NV and no more than 10% NY',
+  //               '20% or more exposure in CO, FL, IL, LA, NJ, NV, and / or > 10% NY'],
+  //     value: '',
+  //     lob: 'Liability, Package',
+  //     crfQuestion: 'Jurisdictional Consideration',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: "Determine the business's Financial Stress Score",
-      name: "Determine the business's Financial Stress Score",
-      options: ['70%  <= x < 100%', '30% <= x < 70% or Unknown', 'x<30%'],
-      value: '',
-      lob: 'Liability, Package',
-      crfQuestion: 'Financial Stress Score',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: "Determine the business's Financial Stress Score",
+  //     name: "Determine the business's Financial Stress Score",
+  //     options: ['70%  <= x < 100%', '30% <= x < 70% or Unknown', 'x<30%'],
+  //     value: '',
+  //     lob: 'Liability, Package',
+  //     crfQuestion: 'Financial Stress Score',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'radiobutton',
-      label: "Determine the Fiver Year Loss History",
-      name: "Determine the Fiver Year Loss History",
-      options: ['Five Year GL Keypunch LR < 10%', 
-                'Five Year GL Keypunch LR < 20%', 
-                'Five Year GL Keypunch LR is < 30%',
-                'Five Year GL Keypunch LR is between 31% - 45%',
-                'Five Year GL Keypunch LR > 45%'],
-      value: '',
-      lob: 'Liability, Package',
-      crfQuestion: 'Loss History',
-      validations: [
-        {
-          name: 'required',
-          validator: Validators.required,
-          message: 'This question is mandatory to answer',
-        }
-      ]
-    },
+  //   {
+  //     type: 'radiobutton',
+  //     label: "Determine the Fiver Year Loss History",
+  //     name: "Determine the Fiver Year Loss History",
+  //     options: ['Five Year GL Keypunch LR < 10%', 
+  //               'Five Year GL Keypunch LR < 20%', 
+  //               'Five Year GL Keypunch LR is < 30%',
+  //               'Five Year GL Keypunch LR is between 31% - 45%',
+  //               'Five Year GL Keypunch LR > 45%'],
+  //     value: '',
+  //     lob: 'Liability, Package',
+  //     crfQuestion: 'Loss History',
+  //     validations: [
+  //       {
+  //         name: 'required',
+  //         validator: Validators.required,
+  //         message: 'This question is mandatory to answer',
+  //       }
+  //     ]
+  //   },
 
-    {
-      type: 'button',
-      label: 'Save',
-    },
-  ]
+  //   {
+  //     type: 'button',
+  //     label: 'Save',
+  //   },
+  // ]
+
   qData : any;
   expression : boolean = false;
   submit(value: any) {}
@@ -1121,7 +1129,7 @@ getJson(){
   this.dsService.getJson().subscribe(data=>{
     this.qData = data.data;
     console.log("qdaaaaaaaaaa",this.qData)
-    console.log("regConfigCRF",this.regConfigCRF)
+    // console.log("regConfigCRF",this.regConfigCRF)
     this.expression = true;
    });
 }
@@ -1129,7 +1137,8 @@ getJson(){
 ngOnInit() {
 
 this.getJson();
-  
+// console.log(this.qData);
+
 }
 
 

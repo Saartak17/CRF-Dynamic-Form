@@ -4,6 +4,7 @@ export interface Validator {
     message: string;
   }
   export interface CriticalRiskFactorsConfig {
+    questionID?: string;
     label?: string;
     name?: string;
     inputType?: string;
@@ -13,6 +14,4 @@ export interface Validator {
     value?: any;
     validations?: Validator[];
     formArrays?:any[];
-    lob?: string;
-    crfQuestion?: string;
   }
